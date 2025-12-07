@@ -5,11 +5,11 @@ public record Dial(int position) {
         this(50);
     }
 
-    public int position() {
-        return normalize(position);
+    public Dial(int position) {
+        this.position = normalize(position);
     }
 
     private static int normalize(int position) {
-        return position % 100 + (position < 0 ? 100 : 0);
+        return ((position % 100) + 100) % 100;
     }
 }

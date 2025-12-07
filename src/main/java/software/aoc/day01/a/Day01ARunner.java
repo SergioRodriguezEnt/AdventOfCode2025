@@ -37,6 +37,9 @@ public class Day01ARunner implements Runner<Integer> {
     private record DialState(Dial dial, int zeroCount) {
         DialState nextWith(Order order) {
             Dial newDial = order.apply(dial);
+
+            System.out.println(dial.position() + " + " + order.rotation() + " = " + newDial.position() + " Z: " + (zeroCount+(newDial.position() == 0 ? 1 : 0)));
+
             return new DialState(newDial, zeroCount + (newDial.position() == 0 ? 1 : 0));
         }
     }
