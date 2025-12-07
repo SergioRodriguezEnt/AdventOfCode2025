@@ -23,5 +23,4 @@ public class Day01ATest {
         Integer result = runner.runFrom(this.getClass().getResourceAsStream("Day01TestInput.txt"));
         assertThat(result).isEqualTo(3);
     }
-
 }
