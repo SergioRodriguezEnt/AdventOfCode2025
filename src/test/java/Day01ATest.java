@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Test;
 import software.aoc.Runner;
-import software.aoc.day01.a.Day01ARunner;
-import software.aoc.day01.a.Dial;
-import software.aoc.day01.a.Order;
+import software.aoc.day01.a.Runner01A;
+import software.aoc.day01.Dial;
+import software.aoc.day01.Order;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,8 +19,8 @@ public class Day01ATest {
 
     @Test
     public void test_runner_should_execute_and_return_correctly() {
-        Runner<Integer> runner = new Day01ARunner();
-        Integer result = runner.runFrom(this.getClass().getResourceAsStream("Day01ATestInput.txt"));
+        Runner<Integer> runner = new Runner01A();
+        Integer result = runner.runFrom(this.getClass().getResourceAsStream("Day01TestInput.txt"));
         assertThat(result).isEqualTo(3);
     }
 

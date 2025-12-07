@@ -1,6 +1,8 @@
 package software.aoc.day01.a;
 
 import software.aoc.Runner;
+import software.aoc.day01.Dial;
+import software.aoc.day01.Order;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Stream;
 
-public class Day01ARunner implements Runner<Integer> {
+public class Runner01A implements Runner<Integer> {
     private Stream<Order> instructions;
 
     @Override
@@ -28,19 +30,20 @@ public class Day01ARunner implements Runner<Integer> {
 
     private Integer runInstructions() {
         return instructions
-                .reduce(new DialState(new Dial(), 0),
-                        DialState::nextWith,
+                .reduce(new DialRecord(new Dial(), 0),
+                        DialRecord::nextWith,
                         (_, b) -> b)
                 .zeroCount;
     }
 
-    private record DialState(Dial dial, int zeroCount) {
-        DialState nextWith(Order order) {
+    private record DialRecord(Dial dial, int zeroCount) {
+        DialRecord nextWith(Order order) {
             Dial newDial = order.apply(dial);
+            return new DialRecord(newDial, getNewCount(newDial));
+        }
 
-            System.out.println(dial.position() + " + " + order.rotation() + " = " + newDial.position() + " Z: " + (zeroCount+(newDial.position() == 0 ? 1 : 0)));
-
-            return new DialState(newDial, zeroCount + (newDial.position() == 0 ? 1 : 0));
+        private int getNewCount(Dial dial) {
+            return zeroCount + (dial.position() == 0 ? 1 : 0);
         }
     }
 }

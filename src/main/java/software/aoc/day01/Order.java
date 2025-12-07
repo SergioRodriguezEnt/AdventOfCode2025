@@ -1,4 +1,4 @@
-package software.aoc.day01.a;
+package software.aoc.day01;
 
 import java.util.function.Function;
 
