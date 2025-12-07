@@ -17,6 +17,7 @@ public class Day01ARunner implements Runner<Integer> {
             loadInstructionsFrom(br);
             return runInstructions();
         } catch (IOException e) {
+            System.err.println("Error while reading instructions from file: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -29,7 +30,7 @@ public class Day01ARunner implements Runner<Integer> {
         return instructions
                 .reduce(new DialState(new Dial(), 0),
                         DialState::nextWith,
-                        (a, b) -> b)
+                        (_, b) -> b)
                 .zeroCount;
     }
 
