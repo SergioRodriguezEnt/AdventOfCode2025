@@ -25,7 +25,7 @@ public class Runner02 implements Runner<Long> {
             loadRangesFrom(br);
             return validateRanges();
         } catch (IOException e) {
-            System.err.println("Error while reading instructions from file: " + e.getMessage());
+            System.err.println("Error while reading from file: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }

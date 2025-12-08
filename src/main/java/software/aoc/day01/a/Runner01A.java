@@ -19,7 +19,7 @@ public class Runner01A implements Runner<Integer> {
             loadInstructionsFrom(br);
             return runInstructions();
         } catch (IOException e) {
-            System.err.println("Error while reading instructions from file: " + e.getMessage());
+            System.err.println("Error while reading from file: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
