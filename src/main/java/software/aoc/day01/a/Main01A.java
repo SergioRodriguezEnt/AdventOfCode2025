@@ -1,10 +1,21 @@
 package software.aoc.day01.a;
 
-import software.aoc.Runner;
+import software.aoc.day01.Lock;
+import software.aoc.day01.Order;
+import software.aoc.day01.Runner01Builder;
 
 public class Main01A {
+
     static void main() {
-        Runner<Integer> runner = new Runner01A();
-        System.out.println(runner.runFrom(Main01A.class.getClassLoader().getResourceAsStream("Day01Input.txt")));
+        int result = new Runner01Builder()
+                .from(Main01A.class.getClassLoader().getResourceAsStream("Day01Input.txt"))
+                .use(Main01A::counterFn)
+                .runner()
+                .run();
+        System.out.println(result);
+    }
+
+    private static int counterFn(Lock lock, Order order) {
+        return lock.count() + (order.apply(lock.dial()).position() == 0 ? 1 : 0);
     }
 }
