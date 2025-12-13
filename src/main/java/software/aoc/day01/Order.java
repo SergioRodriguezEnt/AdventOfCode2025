@@ -1,8 +1,6 @@
 package software.aoc.day01;
 
-import java.util.function.Function;
-
-public record Order(int sign, int amount) implements Function<Dial, Dial> {
+public record Order(int sign, int amount){
     public Order(String order) {
         this(signOf(order), amountOf(order));
     }
@@ -19,8 +17,7 @@ public record Order(int sign, int amount) implements Function<Dial, Dial> {
         return sign * amount;
     }
 
-    @Override
-    public Dial apply(Dial dial) {
+    public Dial applyTo(Dial dial) {
         return new Dial(dial.position() + rotation());
     }
 }

@@ -27,16 +27,16 @@ public class Day01ATest {
         assertThat(order1.sign()).isEqualTo(-1);
         assertThat(order1.amount()).isEqualTo(10);
         assertThat(order1.rotation()).isEqualTo(-10);
-        assertThat(order1.apply(dial).position()).isEqualTo(40);
+        assertThat(order1.applyTo(dial).position()).isEqualTo(40);
 
         assertThat(order2.sign()).isEqualTo(1);
         assertThat(order2.amount()).isEqualTo(10);
         assertThat(order2.rotation()).isEqualTo(10);
-        assertThat(order2.apply(dial).position()).isEqualTo(60);
+        assertThat(order2.applyTo(dial).position()).isEqualTo(60);
     }
 
     private static int counterFn(Lock lock, Order order) {
-        return lock.count() + (order.apply(lock.dial()).position() == 0 ? 1 : 0);
+        return lock.count() + (order.applyTo(lock.dial()).position() == 0 ? 1 : 0);
     }
 
     @Test

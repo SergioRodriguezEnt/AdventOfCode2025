@@ -16,6 +16,6 @@ public class Main01A {
     }
 
     private static int counterFn(Lock lock, Order order) {
-        return lock.count() + (order.apply(lock.dial()).position() == 0 ? 1 : 0);
+        return lock.count() + (order.applyTo(lock.dial()).position() == 0 ? 1 : 0);
     }
 }

@@ -18,7 +18,7 @@ public class Main01B {
     private static int counterFn(Lock lock, Order order) {
         return lock.count()
                 + fullRotations(order)
-                + remainderCrosses(lock.dial().position(), order.rotation()%100, order.apply(lock.dial()).position());
+                + remainderCrosses(lock.dial().position(), order.rotation()%100, order.applyTo(lock.dial()).position());
     }
 
     private static int fullRotations(Order order) {
