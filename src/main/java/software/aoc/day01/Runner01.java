@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.function.ToIntBiFunction;
 import java.util.stream.Stream;
 
-public record Runner01(Stream<Order> instructions, ToIntBiFunction<Lock, Order> counterFn) {
+public record Runner01(Stream<Order> orders, ToIntBiFunction<Lock, Order> counterFn) {
     public Runner01(InputStream fileStream, ToIntBiFunction<Lock, Order> counterFn) {
         this(instructionsFrom(fileStream), counterFn);
     }
@@ -21,7 +21,7 @@ public record Runner01(Stream<Order> instructions, ToIntBiFunction<Lock, Order> 
     }
 
     public int run() {
-        return instructions
+        return orders
                 .reduce(new Lock(new Dial(), 0, counterFn),
                         Lock::nextWith,
                         (_, b) -> b)

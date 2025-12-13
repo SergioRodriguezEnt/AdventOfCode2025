@@ -4,16 +4,16 @@ import java.util.function.LongPredicate;
 import java.util.stream.LongStream;
 
 public record IdRange(long startId, long endId) {
-    public IdRange(String range) {
-        int i = range.indexOf('-');
-        this(Long.parseLong(range.substring(0, i)), Long.parseLong(range.substring(i + 1)));
+    public IdRange(String idRange) {
+        int middleIndex = idRange.indexOf('-');
+        this(Long.parseLong(idRange.substring(0, middleIndex)), Long.parseLong(idRange.substring(middleIndex + 1)));
     }
 
     public LongStream getIds() {
         return LongStream.range(startId, endId + 1);
     }
 
-    public LongStream getInvalidIds(LongPredicate condition) {
-        return getIds().filter(condition.negate());
+    public LongStream getInvalidIds(LongPredicate validationCondition) {
+        return getIds().filter(validationCondition.negate());
     }
 }
