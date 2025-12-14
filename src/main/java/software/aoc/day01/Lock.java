@@ -2,8 +2,8 @@ package software.aoc.day01;
 
 import java.util.function.ToIntBiFunction;
 
-public record Lock(Dial dial, int count, ToIntBiFunction<Lock, Order> counterFn) {
+public record Lock(Dial dial, int count, ToIntBiFunction<Lock, Order> counter) {
     public Lock nextWith(Order order) {
-        return new Lock(order.applyTo(dial), counterFn.applyAsInt(this, order), counterFn);
+        return new Lock(order.applyTo(dial), counter.applyAsInt(this, order), counter);
     }
 }

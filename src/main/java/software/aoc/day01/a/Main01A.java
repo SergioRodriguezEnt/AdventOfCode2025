@@ -9,13 +9,13 @@ public class Main01A {
     static void main() {
         int result = new Runner01Builder()
                 .from(Main01A.class.getClassLoader().getResourceAsStream("Day01Input.txt"))
-                .use(Main01A::counterFn)
+                .use(Main01A::counter)
                 .runner()
                 .run();
         System.out.println(result);
     }
 
-    private static int counterFn(Lock lock, Order order) {
+    private static int counter(Lock lock, Order order) {
         return lock.count() + (order.applyTo(lock.dial()).position() == 0 ? 1 : 0);
     }
 }

@@ -6,25 +6,25 @@ import java.io.InputStreamReader;
 import java.util.function.ToIntBiFunction;
 import java.util.stream.Stream;
 
-public record Runner01(Stream<Order> orders, ToIntBiFunction<Lock, Order> counterFn) {
-    public Runner01(InputStream fileStream, ToIntBiFunction<Lock, Order> counterFn) {
-        this(instructionsFrom(fileStream), counterFn);
+public record Runner01(Stream<Order> orders, ToIntBiFunction<Lock, Order> counter) {
+    public Runner01(InputStream file, ToIntBiFunction<Lock, Order> counter) {
+        this(instructionsFrom(file), counter);
     }
 
-    private static Stream<Order> instructionsFrom(InputStream fileStream) {
-        try (InputStreamReader isr = new InputStreamReader(fileStream)) {
-            return isr.readAllLines().stream().map(Order::new);
-        } catch (IOException e) {
-            System.err.println("Error while reading from file: " + e.getMessage());
-            throw new RuntimeException(e);
+    private static Stream<Order> instructionsFrom(InputStream file) {
+        try (InputStreamReader reader = new InputStreamReader(file)) {
+            return reader.readAllLines().stream().map(Order::new);
+        } catch (IOException exception) {
+            System.err.println("Error while reading from file: " + exception.getMessage());
+            throw new RuntimeException(exception);
         }
     }
 
     public int run() {
         return orders
-                .reduce(new Lock(new Dial(), 0, counterFn),
+                .reduce(new Lock(new Dial(), 0, counter),
                         Lock::nextWith,
-                        (_, b) -> b)
+                        (_, nextLock) -> nextLock)
                 .count();
     }
 }

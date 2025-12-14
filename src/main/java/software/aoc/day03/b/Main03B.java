@@ -1,10 +1,14 @@
 package software.aoc.day03.b;
 
-import software.aoc.Runner;
+import software.aoc.day03.Runner03Builder;
 
 public class Main03B {
     static void main() {
-        Runner<Integer> runner = new Runner03B();
-        System.out.println(runner.runFrom(Main03B.class.getClassLoader().getResourceAsStream("Day03Input.txt")));
+        long result = new Runner03Builder()
+                .from(Main03B.class.getClassLoader().getResourceAsStream("Day03Input.txt"))
+                .with(12)
+                .runner()
+                .run();
+        System.out.println(result);
     }
 }

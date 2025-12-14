@@ -13,7 +13,7 @@ public record IdRange(long startId, long endId) {
         return LongStream.range(startId, endId + 1);
     }
 
-    public LongStream getInvalidIds(LongPredicate validationCondition) {
-        return getIds().filter(validationCondition.negate());
+    public LongStream getInvalidIds(LongPredicate validator) {
+        return getIds().filter(validator.negate());
     }
 }
