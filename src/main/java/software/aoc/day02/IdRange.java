@@ -10,7 +10,7 @@ public record IdRange(long startId, long endId) {
     }
 
     public LongStream getIds() {
-        return LongStream.range(startId, endId + 1);
+        return LongStream.rangeClosed(startId, endId);
     }
 
     public LongStream getInvalidIds(LongPredicate validator) {
