@@ -16,8 +16,4 @@ public record Order(int sign, int amount){
     public int rotation() {
         return sign * amount;
     }
-
-    public Dial applyTo(Dial dial) {
-        return new Dial(dial.position() + rotation());
-    }
 }

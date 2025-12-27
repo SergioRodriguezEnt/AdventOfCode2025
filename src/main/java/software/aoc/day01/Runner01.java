@@ -23,7 +23,7 @@ public record Runner01(Stream<Order> orders, ToIntBiFunction<Lock, Order> counte
     public int run() {
         return orders
                 .reduce(new Lock(new Dial(), 0, counter),
-                        Lock::nextWith,
+                        Lock::nextFrom,
                         (_, nextLock) -> nextLock)
                 .count();
     }

@@ -15,7 +15,7 @@ public class Main01A {
         System.out.println(result);
     }
 
-    private static int counter(Lock lock, Order order) {
-        return lock.count() + (order.applyTo(lock.dial()).position() == 0 ? 1 : 0);
+    public static int counter(Lock lock, Order order) {
+        return lock.count() + (lock.updateDialWith(order).position() == 0 ? 1 : 0);
     }
 }

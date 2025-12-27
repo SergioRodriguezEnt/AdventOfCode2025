@@ -15,10 +15,10 @@ public class Main01B {
         System.out.println(result);
     }
 
-    private static int counter(Lock lock, Order order) {
+    public static int counter(Lock lock, Order order) {
         return lock.count()
                 + fullRotations(order)
-                + remainderCrosses(lock.dial().position(), order.rotation()%100, order.applyTo(lock.dial()).position());
+                + remainderCrosses(lock.dial().position(), order.rotation()%100, lock.updateDialWith(order).position());
     }
 
     private static int fullRotations(Order order) {
