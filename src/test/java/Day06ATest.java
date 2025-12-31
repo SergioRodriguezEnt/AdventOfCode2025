@@ -1,0 +1,33 @@
+import org.junit.jupiter.api.Test;
+import software.aoc.day06.Operation;
+import software.aoc.day06.a.OperationBuilderA;
+import software.aoc.day06.Operator;
+import software.aoc.day06.Runner06;
+
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class Day06ATest {
+    @Test
+    public void test_operation() {
+        Operation add = new Operation(List.of(1L, 4L, 5L), Operator.ADD);
+        Operation multiply = new Operation(List.of(1L, 2L, 5L), Operator.MULTIPLY);
+        assertThat(add.operate()).isEqualTo(10);
+        assertThat(multiply.operate()).isEqualTo(10);
+    }
+
+    @Test
+    public void test_operation_builder() {
+        long[] results = new OperationBuilderA().add(" 45 64  387 23").add("  6 98  215 314").add("*   +   *   +").build().mapToLong(Operation::operate).toArray();
+        assertThat(results).isEqualTo(new long[] {270, 162, 83205, 337});
+    }
+
+    @Test
+    public void test_runner_with_inputs() {
+        long result = Runner06.with(this.getClass().getResourceAsStream("Day06TestInput.txt"), new OperationBuilderA())
+                .run();
+        assertThat(result).isEqualTo(4277556);
+    }
+
+}
