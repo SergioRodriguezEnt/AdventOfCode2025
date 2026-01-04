@@ -5,6 +5,8 @@ target/
 .kotlin
 .jar
 .class
+*.txt
+.txt
 
 
 ### IntelliJ IDEA ###
