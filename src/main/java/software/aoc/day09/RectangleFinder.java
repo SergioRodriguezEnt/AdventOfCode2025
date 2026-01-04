@@ -38,7 +38,7 @@ public record RectangleFinder(List<Coordinate> redTiles) {
         Rectangle r = new Rectangle(c, new Coordinate(0, c.y()));
 
         for (Rectangle edge : edges) {
-            if (edge.contains(c)) return true; //Doesnt work
+            if (edge.contains(c)) return true;
 
             if (edge.overlaps(r)) projections++;
         }
