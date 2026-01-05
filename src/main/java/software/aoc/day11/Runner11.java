@@ -14,7 +14,7 @@ public record Runner11(List<String> input) {
         }
     }
 
-    public int run() {
+    public long run() {
         return PathFinder.from(input).paths();
     }
 
