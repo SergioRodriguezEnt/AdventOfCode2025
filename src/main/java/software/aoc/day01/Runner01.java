@@ -11,6 +11,14 @@ public record Runner01(Stream<Order> orders, ToIntBiFunction<Lock, Order> counte
         this(instructionsFrom(file), counter);
     }
 
+    public int run() {
+        return orders
+                .reduce(new Lock(new Dial(), 0, counter),
+                        Lock::nextFrom,
+                        (_, nextLock) -> nextLock)
+                .count();
+    }
+
     private static Stream<Order> instructionsFrom(InputStream file) {
         try (InputStreamReader reader = new InputStreamReader(file)) {
             return reader.readAllLines().stream().map(Order::new);
@@ -18,13 +26,5 @@ public record Runner01(Stream<Order> orders, ToIntBiFunction<Lock, Order> counte
             System.err.println("Error while reading from file: " + exception.getMessage());
             throw new RuntimeException(exception);
         }
-    }
-
-    public int run() {
-        return orders
-                .reduce(new Lock(new Dial(), 0, counter),
-                        Lock::nextFrom,
-                        (_, nextLock) -> nextLock)
-                .count();
     }
 }

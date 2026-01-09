@@ -16,7 +16,7 @@ public record DigitSequenceSelector(List<Integer> digits, List<Map.Entry<Integer
             return this;
         }
 
-        tryToAdd(newDigit);
+        tryToAddInsideDigits(newDigit);
 
         if (digits.size() < maxDigits) {
             digits.add(newDigit);
@@ -25,7 +25,14 @@ public record DigitSequenceSelector(List<Integer> digits, List<Map.Entry<Integer
         return this;
     }
 
-    private void tryToAdd(int newDigit) {
+    public long number() {
+        rebuildNumber();
+        return IntStream.iterate(digits.size() - 1, i -> i >= 0, i -> i - 1)
+                .mapToLong(i -> (long) digits.get(i) * Math.powExact(10L, digits.size() - i - 1))
+                .sum();
+    }
+
+    private void tryToAddInsideDigits(int newDigit) {
         IntStream.iterate(digits.size()-1, i -> i >= 0, i -> i - 1)
                 .sequential()
                 .filter(i->digits.get(i) < newDigit)
@@ -33,13 +40,6 @@ public record DigitSequenceSelector(List<Integer> digits, List<Map.Entry<Integer
                     reservedDigits.add(Map.entry(i, digits.get(i)));
                     digits.remove(i);
                 });
-    }
-
-    public long number() {
-        rebuildNumber();
-        return IntStream.iterate(digits.size() - 1, i -> i >= 0, i -> i - 1)
-                .mapToLong(i -> (long) digits.get(i) * Math.powExact(10L, digits.size() - i - 1))
-                .sum();
     }
 
     private void rebuildNumber() {

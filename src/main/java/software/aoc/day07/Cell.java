@@ -20,6 +20,14 @@ public record Cell(Space space, long paths) {
         return new Cell(Space.BEAM, paths);
     }
 
+    public static Cell from (char c) {
+        return c == '.' ? empty() : (c == '^' ? splitter() : beam());
+    }
+
+    public static List<Cell> parse(String str) {
+        return str.chars().mapToObj(c -> from((char) c)).toList();
+    }
+
     public boolean isEmpty() {
         return space == Space.EMPTY;
     }
@@ -30,14 +38,6 @@ public record Cell(Space space, long paths) {
 
     public boolean isBeam() {
         return space == Space.BEAM;
-    }
-
-    public static Cell from (char c) {
-        return c == '.' ? empty() : (c == '^' ? splitter() : beam());
-    }
-
-    public static List<Cell> parse(String str) {
-        return str.chars().mapToObj(c -> from((char) c)).toList();
     }
 
     @SuppressWarnings("NullableProblems")

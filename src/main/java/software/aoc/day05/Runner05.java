@@ -18,6 +18,14 @@ public record Runner05(IdChecker checker, LongStream ids) {
         }
     }
 
+    public long filter_ingredients() {
+        return ids.filter(checker::contains).count();
+    }
+
+    public long count_possible_ingredients() {
+        return checker.ranges().stream().mapToLong(range -> range.max() + 1 - range.min()).sum();
+    }
+
     private static LongStream idsFrom(ListIterator<String> iterator) {
         List<Long> ids = new ArrayList<>();
         iterator.forEachRemaining(str -> ids.add(Long.parseLong(str)));
@@ -34,13 +42,5 @@ public record Runner05(IdChecker checker, LongStream ids) {
             checker = checker.add(current);
         }
         return checker;
-    }
-
-    public long filter_ingredients() {
-        return ids.filter(checker::contains).count();
-    }
-
-    public long count_possible_ingredients() {
-        return checker.ranges().stream().mapToLong(range -> range.max() + 1 - range.min()).sum();
     }
 }

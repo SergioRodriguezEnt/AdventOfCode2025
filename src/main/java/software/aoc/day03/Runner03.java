@@ -10,6 +10,10 @@ public record Runner03(Stream<Bank> banks, int maxBatteriesActivePerBank) {
         this(banksFrom(file), maxBatteriesActivePerBank);
     }
 
+    public long run() {
+        return banks.mapToLong(this::bestDigitsFrom).sum();
+    }
+
     private static Stream<Bank> banksFrom(InputStream file) {
         try (InputStreamReader reader = new InputStreamReader(file)) {
             return reader.readAllLines().stream().map(Bank::new);
@@ -17,10 +21,6 @@ public record Runner03(Stream<Bank> banks, int maxBatteriesActivePerBank) {
             System.err.println("Error while reading from file: " + exception.getMessage());
             throw new RuntimeException(exception);
         }
-    }
-
-    public long run() {
-        return banks.mapToLong(this::bestDigitsFrom).sum();
     }
 
     private long bestDigitsFrom(Bank bank) {

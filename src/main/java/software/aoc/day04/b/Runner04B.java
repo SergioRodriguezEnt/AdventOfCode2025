@@ -14,15 +14,6 @@ public class Runner04B implements Runner04 {
         wall = wallFrom(file);
     }
 
-    private static Wall wallFrom(InputStream file) {
-        try (InputStreamReader reader = new InputStreamReader(file)) {
-            return Wall.from(reader.readAllLines());
-        } catch (IOException exception) {
-            System.err.println("Error while reading from file: " + exception.getMessage());
-            throw new RuntimeException(exception);
-        }
-    }
-
     @Override
     public long run() {
         WallAnalyzer analyzer = new WallAnalyzer(wall);
@@ -33,5 +24,14 @@ public class Runner04B implements Runner04 {
             result += analyzer.getRemovableRollCount();
         }
         return result;
+    }
+
+    private static Wall wallFrom(InputStream file) {
+        try (InputStreamReader reader = new InputStreamReader(file)) {
+            return Wall.from(reader.readAllLines());
+        } catch (IOException exception) {
+            System.err.println("Error while reading from file: " + exception.getMessage());
+            throw new RuntimeException(exception);
+        }
     }
 }

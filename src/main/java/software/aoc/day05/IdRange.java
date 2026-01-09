@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public record IdRange(long min, long max) {
     public IdRange(String str) {
-        long[] nums = Arrays.stream(str.split("-")).mapToLong(Long::valueOf).toArray();
-        this(nums[0], nums[1]);
+        long[] bounds = Arrays.stream(str.split("-")).mapToLong(Long::valueOf).toArray();
+        this(bounds[0], bounds[1]);
     }
 
     public boolean overlapsWith(IdRange other) {

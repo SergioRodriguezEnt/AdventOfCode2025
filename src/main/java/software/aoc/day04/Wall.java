@@ -9,15 +9,25 @@ public record Wall(List<List<Space>> grid) {
         return grid.get(position.row()+1).get(position.col()+1);
     }
 
-    private int colAmount() {
-        return grid.getFirst().size()-2;
-    }
-
     public static Wall from(List<String> wallData) {
         int rowSize = wallData.getFirst().length();
         return new Wall(addSpacerRowsTo(wallData.stream(), rowSize)
                 .map(Wall::addRowSpacing)
                 .map(Wall::spaceListFrom).toList());
+    }
+
+    public Stream<Stream<Position>> positionRowStream() {
+        return IntStream.range(0, grid.size()-2)
+                .mapToObj(row -> IntStream.range(0, colAmount())
+                        .mapToObj(col -> new Position(row, col)));
+    }
+
+    public Stream<Position> getPositions() {
+        return positionRowStream().flatMap(s -> s);
+    }
+
+    private int colAmount() {
+        return grid.getFirst().size()-2;
     }
 
     private static List<Space> spaceListFrom(String s) {
@@ -38,15 +48,5 @@ public record Wall(List<List<Space>> grid) {
 
     private static String addRowSpacing(String row) {
         return ".".concat(row.concat("."));
-    }
-
-    public Stream<Stream<Position>> positionRowStream() {
-        return IntStream.range(0, grid.size()-2)
-                .mapToObj(row -> IntStream.range(0, colAmount())
-                        .mapToObj(col -> new Position(row, col)));
-    }
-
-    public Stream<Position> getPositions() {
-        return positionRowStream().flatMap(s -> s);
     }
 }

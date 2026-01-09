@@ -9,40 +9,26 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public record CircuitConnector(List<Circuit> circuits) {
-    private Stream<BoxPair> boxPairsFor(List<Box> boxes, long n) {
-        return IntStream.range(0, boxes.size())
-                .parallel()
-                .mapToObj(i -> IntStream.range(i + 1, boxes.size())
-                        .mapToObj(boxes::get)
-                        .map(box2 -> new BoxPair(boxes.get(i), box2, boxes.get(i).distanceTo(box2)))
-                ).flatMap(s -> s)
-                .sorted(Comparator.comparingDouble(BoxPair::distance))
-                .limit(n);
-    }
-
-    private List<Circuit> connectFor(long n) {
-        ArrayList<Circuit> circuits = new ArrayList<>(this.circuits);
-        boxPairsFor(boxes(), n).sequential()
-                .filter(pair->!circuitOf(pair.box1(), circuits).boxes().contains(pair.box2()))
-                .forEachOrdered(pair -> combineInto(pair, circuits));
-        return circuits;
-    }
-
-    private void combineInto(BoxPair pair, ArrayList<Circuit> circuits) {
-        Circuit c1 = circuitOf(pair.box1(), circuits);
-        Circuit c2 = circuitOf(pair.box2(), circuits);
-        circuits.remove(c1);
-        circuits.remove(c2);
-        circuits.add(new Circuit(Stream.concat(c1.boxes().stream(), c2.boxes().stream()).collect(Collectors.toSet())));
-    }
-
-    public int connectionCostFor(long n) {
-        return connectFor(n).stream()
+    public int connectionCostFor(long maxPairsAfterSort) {
+        return connectFor(maxPairsAfterSort).stream()
                 .map(c -> c.boxes().size())
                 .sorted(Comparator.reverseOrder())
                 .limit(3)
                 .mapToInt(num -> num)
                 .reduce(1, Math::multiplyExact);
+    }
+
+    public long connectionCost() {
+        BoxPair pair = connect();
+        return ((long)pair.box1().x())*pair.box2().x();
+    }
+
+    private List<Circuit> connectFor(long maxPairsAfterSort) {
+        ArrayList<Circuit> circuits = new ArrayList<>(this.circuits);
+        boxPairsFor(boxes(), maxPairsAfterSort).sequential()
+                .filter(pair->!circuitOf(pair.box1(), circuits).boxes().contains(pair.box2()))
+                .forEachOrdered(pair -> combineInto(pair, circuits));
+        return circuits;
     }
 
     private BoxPair connect() {
@@ -57,9 +43,23 @@ public record CircuitConnector(List<Circuit> circuits) {
         return finalPair.get();
     }
 
-    public long connectionCost() {
-        BoxPair pair = connect();
-        return ((long)pair.box1().x())*pair.box2().x();
+    private void combineInto(BoxPair pair, ArrayList<Circuit> circuits) {
+        Circuit c1 = circuitOf(pair.box1(), circuits);
+        Circuit c2 = circuitOf(pair.box2(), circuits);
+        circuits.remove(c1);
+        circuits.remove(c2);
+        circuits.add(new Circuit(Stream.concat(c1.boxes().stream(), c2.boxes().stream()).collect(Collectors.toSet())));
+    }
+
+    private Stream<BoxPair> boxPairsFor(List<Box> boxes, long maxPairsAfterSort) {
+        return IntStream.range(0, boxes.size())
+                .parallel()
+                .mapToObj(i -> IntStream.range(i + 1, boxes.size())
+                        .mapToObj(boxes::get)
+                        .map(box2 -> new BoxPair(boxes.get(i), box2, boxes.get(i).distanceTo(box2)))
+                ).flatMap(s -> s)
+                .sorted(Comparator.comparingDouble(BoxPair::distance))
+                .limit(maxPairsAfterSort);
     }
 
     private Circuit circuitOf(Box box, List<Circuit> circuits) {

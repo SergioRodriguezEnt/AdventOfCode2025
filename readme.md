@@ -7,3 +7,9 @@ The src directory contains all code and resource files:<br>
 * main/resources: Here are the input files given during AoC.
 * test/java: Contains the tests done for the code of each day.
 * test/resources: Contains files with test input made from the examples given in AoC.
+
+## TODO
+* refactor day 10
+* complete and refactor day 12
+* complete tests
+* complete readmes

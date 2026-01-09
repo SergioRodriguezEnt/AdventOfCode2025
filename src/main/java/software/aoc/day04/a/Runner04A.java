@@ -13,6 +13,11 @@ public record Runner04A(Wall wall) implements Runner04 {
         this(wallFrom(file));
     }
 
+    @Override
+    public long run() {
+        return new WallAnalyzer(wall).getRemovableRollCount();
+    }
+
     private static Wall wallFrom(InputStream file) {
         try (InputStreamReader reader = new InputStreamReader(file)) {
             return Wall.from(reader.readAllLines());
@@ -20,10 +25,5 @@ public record Runner04A(Wall wall) implements Runner04 {
             System.err.println("Error while reading from file: " + exception.getMessage());
             throw new RuntimeException(exception);
         }
-    }
-
-    @Override
-    public long run() {
-        return new WallAnalyzer(wall).getRemovableRollCount();
     }
 }

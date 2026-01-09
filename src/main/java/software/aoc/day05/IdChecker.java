@@ -10,13 +10,26 @@ public record IdChecker(List<IdRange> ranges) {
     }
 
     public IdChecker add(String str) {
-        return add(new IdRange(str));
+        return addAndTryCombine(new IdRange(str));
     }
 
-    public IdChecker add(IdRange newRange) {
+    public boolean contains(long id) {
+        return ranges.stream().anyMatch(range -> range.contains(id));
+    }
+
+    private IdChecker addAndTryCombine(IdRange newRange) {
         ArrayList<IdRange> newRanges = new ArrayList<>();
         ListIterator<IdRange> iterator = this.ranges.listIterator();
 
+        newRange = tryCombineInto(newRange, iterator, newRanges);
+
+        newRanges.add(newRange);
+        iterator.forEachRemaining(newRanges::add);
+
+        return new IdChecker(List.copyOf(newRanges));
+    }
+
+    private static IdRange tryCombineInto(IdRange newRange, ListIterator<IdRange> iterator, ArrayList<IdRange> newRanges) {
         while (iterator.hasNext()) {
             IdRange current = iterator.next();
             if (newRange.isSmallerThan(current)) {
@@ -29,14 +42,6 @@ public record IdChecker(List<IdRange> ranges) {
             }
             newRanges.add(current);
         }
-
-        newRanges.add(newRange);
-        iterator.forEachRemaining(newRanges::add);
-
-        return new IdChecker(List.copyOf(newRanges));
-    }
-
-    public boolean contains(long id) {
-        return ranges.stream().anyMatch(range -> range.contains(id));
+        return newRange;
     }
 }

@@ -13,6 +13,10 @@ public record Runner02(Stream<IdRange> idRanges, LongPredicate validator) {
         this(idRangesFrom(file), validator);
     }
 
+    public long run() {
+        return idRanges.map(range -> range.getInvalidIds(validator)).mapToLong(LongStream::sum).sum();
+    }
+
     private static Stream<IdRange> idRangesFrom(InputStream file) {
         try (InputStreamReader reader = new InputStreamReader(file)) {
             return Arrays.stream(reader.readAllAsString().split(",")).map(IdRange::new);
@@ -20,11 +24,6 @@ public record Runner02(Stream<IdRange> idRanges, LongPredicate validator) {
             System.err.println("Error while reading from file: " + exception.getMessage());
             throw new RuntimeException(exception);
         }
-
-    }
-
-    public long run() {
-        return idRanges.map(range -> range.getInvalidIds(validator)).mapToLong(LongStream::sum).sum();
     }
 }
 
