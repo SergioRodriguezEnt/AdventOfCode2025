@@ -14,11 +14,11 @@ public record Runner11(List<String> input) {
         }
     }
 
-    public long run() {
+    public long findNormalPaths() {
         return PathFinder.from(input).paths();
     }
 
-    public long runB() {
+    public long findServerPaths() {
         return PathFinder.from(input).serverPaths();
     }
 }

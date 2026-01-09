@@ -8,7 +8,7 @@ public class Day11BTest
     @Test
     public void test() {
         long result = Runner11.with(this.getClass().getResourceAsStream("Day11BTestInput.txt"))
-                .runB();
+                .findServerPaths();
         assertThat(result).isEqualTo(2);
     }
 }

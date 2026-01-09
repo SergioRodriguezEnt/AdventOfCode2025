@@ -9,10 +9,16 @@ import java.util.stream.IntStream;
 public record Region(int width, int length, Map<Integer, Integer> requiredPresents) {
     public static Region from(String str) {
         List<String> data = Arrays.asList(str.split(": "));
+
         List<Integer> size = Arrays.stream(data.getFirst().split("x")).map(Integer::parseInt).toList();
         List<Integer> presents = Arrays.stream(data.getLast().split(" ")).map(Integer::parseInt).toList();
-        Map<Integer, Integer> map = IntStream.range(0, presents.size()).filter(x -> presents.get(x) != 0).boxed().collect(Collectors.toMap(i -> i, presents::get));
-        return new Region(size.getFirst(), size.getLast(), map);
+
+        return new Region(size.getFirst(),
+                size.getLast(),
+                IntStream.range(0, presents.size())
+                        .filter(x -> presents.get(x) != 0)
+                        .boxed()
+                        .collect(Collectors.toMap(i -> i, presents::get)));
     }
 
     public int totalPresents() {

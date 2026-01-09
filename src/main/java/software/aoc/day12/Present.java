@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public record Present(List<Coordinate> coordinates) {
-    public static Present from(List<String> strs) {
-        return new Present(IntStream.range(1, strs.size())
+    public static Present from(List<String> data) {
+        return new Present(IntStream.range(1, data.size())
                 .mapToObj(i -> IntStream.range(0, 3)
-                        .filter(j -> strs.get(i).charAt(j) == '#')
+                        .filter(j -> data.get(i).charAt(j) == '#')
                         .mapToObj(j -> new Coordinate(j - 1, i - 2)))
                 .flatMap(s -> s)
                 .toList());

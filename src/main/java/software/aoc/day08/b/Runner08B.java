@@ -1,6 +1,7 @@
 package software.aoc.day08.b;
 
 import software.aoc.day08.Circuit;
+import software.aoc.day08.CircuitConnector;
 import software.aoc.day08.CircuitLoader;
 
 import java.io.IOException;
@@ -20,6 +21,6 @@ public record Runner08B(List<Circuit> circuits) {
     }
 
     public long run() {
-        return new CircuitConnectorB(circuits).connectionCost();
+        return new CircuitConnector(circuits).connectionCost();
     }
 }

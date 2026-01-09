@@ -20,15 +20,9 @@ public record PresentFitter(Map<Integer, List<Present>> presents) {
     }
 
     public boolean canFit(Region region) {
-        System.out.println(region);
-        System.out.println(region.area());
-        System.out.println(region.totalPresents());
         if (region.area() >= region.totalPresents() * 9) return true;
 
-        System.out.println(areaOfPresents(region.requiredPresents()));
         if (region.area() < areaOfPresents(region.requiredPresents())) return false;
-
-        System.out.println("Non trivial solution: ");
 
         return true;
     }

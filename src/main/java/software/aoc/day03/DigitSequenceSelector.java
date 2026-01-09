@@ -3,6 +3,7 @@ package software.aoc.day03;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public record DigitSequenceSelector(List<Integer> digits, List<Map.Entry<Integer, Integer>> reservedDigits, int maxDigits) {
     public DigitSequenceSelector(int maxBatteriesActivePerBank) {
@@ -15,12 +16,8 @@ public record DigitSequenceSelector(List<Integer> digits, List<Map.Entry<Integer
             return this;
         }
 
-        for (int i = digits.size() - 1; i >= 0; i--) {
-            if (digits.get(i) < newDigit) {
-                reservedDigits.add(Map.entry(i, digits.get(i)));
-                digits.remove(i);
-            }
-        }
+        tryToAdd(newDigit);
+
         if (digits.size() < maxDigits) {
             digits.add(newDigit);
         }
@@ -28,13 +25,21 @@ public record DigitSequenceSelector(List<Integer> digits, List<Map.Entry<Integer
         return this;
     }
 
+    private void tryToAdd(int newDigit) {
+        IntStream.iterate(digits.size()-1, i -> i >= 0, i -> i - 1)
+                .sequential()
+                .filter(i->digits.get(i) < newDigit)
+                .forEach( i -> {
+                    reservedDigits.add(Map.entry(i, digits.get(i)));
+                    digits.remove(i);
+                });
+    }
+
     public long number() {
         rebuildNumber();
-        long number = 0;
-        for (int i = digits.size() - 1; i >= 0; i--) {
-            number += (long) digits.get(i) * Math.powExact(10L, digits.size() - i - 1);
-        }
-        return number;
+        return IntStream.iterate(digits.size() - 1, i -> i >= 0, i -> i - 1)
+                .mapToLong(i -> (long) digits.get(i) * Math.powExact(10L, digits.size() - i - 1))
+                .sum();
     }
 
     private void rebuildNumber() {

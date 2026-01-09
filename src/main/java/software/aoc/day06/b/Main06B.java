@@ -4,7 +4,7 @@ import software.aoc.day06.Runner06;
 
 public class Main06B {
     static void main() {
-        long result = Runner06.with(Main06B.class.getClassLoader().getResourceAsStream("Day06Input.txt"), new OperationBuilderB())
+        long result = Runner06.with(Main06B.class.getClassLoader().getResourceAsStream("Day06Input.txt"), Runner06.BuildingComplexity.COMPLEX)
                 .run();
         System.out.println(result);
     }

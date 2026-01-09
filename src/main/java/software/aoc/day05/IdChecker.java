@@ -16,6 +16,7 @@ public record IdChecker(List<IdRange> ranges) {
     public IdChecker add(IdRange newRange) {
         ArrayList<IdRange> newRanges = new ArrayList<>();
         ListIterator<IdRange> iterator = this.ranges.listIterator();
+
         while (iterator.hasNext()) {
             IdRange current = iterator.next();
             if (newRange.isSmallerThan(current)) {
@@ -28,17 +29,14 @@ public record IdChecker(List<IdRange> ranges) {
             }
             newRanges.add(current);
         }
+
         newRanges.add(newRange);
         iterator.forEachRemaining(newRanges::add);
-        return new IdChecker(newRanges.stream().toList());
+
+        return new IdChecker(List.copyOf(newRanges));
     }
 
     public boolean contains(long id) {
-        for (IdRange range : this.ranges) {
-            if (range.contains(id)) {
-                return true;
-            }
-        }
-        return false;
+        return ranges.stream().anyMatch(range -> range.contains(id));
     }
 }

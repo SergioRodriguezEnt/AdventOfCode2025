@@ -32,6 +32,7 @@ public record RectangleFinder(List<Coordinate> redTiles) {
         return r.edges().allMatch(c -> checkProjection(c, edges));
     }
 
+    //Polygon ray-casting check
     private boolean checkProjection(Coordinate c, List<Rectangle> edges) {
         if(redTiles.contains(c)) return true;
         int projections = 0;

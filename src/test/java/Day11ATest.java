@@ -7,7 +7,7 @@ public class Day11ATest {
     @Test
     public void test() {
         long result = Runner11.with(this.getClass().getResourceAsStream("Day11ATestInput.txt"))
-                .run();
+                .findNormalPaths();
         assertThat(result).isEqualTo(5);
     }
 

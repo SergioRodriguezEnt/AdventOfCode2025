@@ -3,9 +3,9 @@ package software.aoc.day11;
 import java.util.*;
 
 public record PathFinder(Map<String, List<String>> devices) {
-    public static PathFinder from(List<String> strs) {
+    public static PathFinder from(List<String> data) {
         Map<String, List<String>> devices = new HashMap<>();
-        strs.forEach(str -> {
+        data.forEach(str -> {
             List<String> line = Arrays.asList(str.split(" "));
             devices.put(line.getFirst().substring(0, line.getFirst().length() - 1), line.subList(1, line.size()));
         });
@@ -46,53 +46,58 @@ public record PathFinder(Map<String, List<String>> devices) {
         return sfPaths * fdPaths * doPaths;
     }
 
+    //Iterative DFS
     private long findPaths(String initial, String target) {
         Map<String, Long> cache = new HashMap<>();
-        Stack<Set<String>> paths = new Stack<>();
-        Stack<String> alive = new Stack<>();
+        Stack<DevicePath> alive = new Stack<>();
         Stack<Boolean> expanded = new Stack<>();
 
-        alive.push(initial);
-        paths.push(Set.of());
+        alive.push(new DevicePath(initial, Set.of()));
         expanded.push(false);
 
         while (!alive.empty()) {
-            String current = alive.pop();
-            Set<String> currentPath = paths.pop();
-            boolean isExpanded = expanded.pop();
-
-            if (cache.containsKey(current)) continue;
-
-            if (current.equals(target)) {
-                cache.put(current, 1L);
-                continue;
-            }
-
-            if (!isExpanded) {
-                alive.push(current);
-                paths.push(currentPath);
-                expanded.push(true);
-                if (devices.get(current) == null) continue;
-                for (String next : devices.get(current)) {
-                    if (currentPath.contains(next)) continue;
-                    alive.push(next);
-                    Set<String> newPath = new HashSet<>(currentPath);
-                    newPath.add(next);
-                    paths.push(newPath);
-                    expanded.push(false);
-                }
-                continue;
-            }
-
-            long internalCount = 0;
-            if (devices.get(current) != null) {
-                for (String next : devices.get(current)) {
-                    internalCount += cache.getOrDefault(next, 0L);
-                }
-            }
-            cache.put(current, internalCount);
+            exploreFirstPathRemaining(target, alive, expanded, cache);
         }
 
         return cache.getOrDefault(initial, 0L);
+    }
+
+    private void exploreFirstPathRemaining(String target, Stack<DevicePath> alive, Stack<Boolean> expanded, Map<String, Long> cache) {
+        DevicePath current = alive.pop();
+        boolean isExpanded = expanded.pop();
+
+        if (cache.containsKey(current.device())) return;
+
+        if (current.device().equals(target)) {
+            cache.put(current.device(), 1L);
+            return;
+        }
+
+        if (!isExpanded) {
+            alive.push(current);
+            expanded.push(true);
+            if (devices.get(current.device()) == null) return;
+            addPossiblePathsFrom(current, alive, expanded);
+            return;
+        }
+
+        cache.put(current.device(), accumulateResultsObtainedAfter(current.device(), cache));
+    }
+
+    private void addPossiblePathsFrom(DevicePath current, Stack<DevicePath> alive, Stack<Boolean> expanded) {
+        devices.get(current.device())
+                .stream()
+                .filter(next->!current.path().contains(next))
+                .forEach(next-> {
+                    alive.push(current.continueWith(next));
+                    expanded.push(false);
+                });
+    }
+
+    private long accumulateResultsObtainedAfter(String current, Map<String, Long> cache) {
+        return devices.getOrDefault(current, List.of())
+                .stream()
+                .mapToLong(next -> cache.getOrDefault(next, 0L))
+                .sum();
     }
 }

@@ -8,7 +8,9 @@ public record WallAnalyzer(Wall wall) {
     }
 
     public Stream<Position> getRemovableRolls() {
-        return wall.getPositions().filter(pos -> wall.spaceAt(pos) == Space.PAPER).filter(pos -> !isSurrounded(pos));
+        return wall.getPositions()
+                .filter(pos -> wall.spaceAt(pos) == Space.PAPER)
+                .filter(pos -> !isSurrounded(pos));
     }
 
     private boolean isSurrounded(Position pos) {
