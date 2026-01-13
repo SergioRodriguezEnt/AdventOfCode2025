@@ -12,7 +12,7 @@ public class Main02A {
         System.out.println(result);
     }
 
-    private static boolean validator(long id) {
+    public static boolean validator(long id) {
         return !Long.toString(id).matches("^(\\d+)\\1$");
     }
 }

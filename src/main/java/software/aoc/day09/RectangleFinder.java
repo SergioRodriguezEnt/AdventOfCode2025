@@ -5,14 +5,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public record RectangleFinder(List<Coordinate> redTiles) {
-    public Stream<Rectangle> rectangles() {
-        return IntStream.range(0, redTiles.size() - 1)
-                .mapToObj(i -> IntStream.range(i + 1, redTiles().size())
-                        .mapToObj(j -> new Rectangle(redTiles.get(i), redTiles.get(j))))
-                .flatMap(s -> s)
-                .sorted(Comparator.comparingLong(Rectangle::area).reversed());
-    }
-
     public Rectangle biggest() {
         return rectangles()
                 .findFirst()
@@ -26,6 +18,14 @@ public record RectangleFinder(List<Coordinate> redTiles) {
                 .filter(r -> isInsidePolygon(r, edges))
                 .findFirst()
                 .orElse(new Rectangle(new Coordinate(0, 0), new Coordinate(0, 0)));
+    }
+
+    private Stream<Rectangle> rectangles() {
+        return IntStream.range(0, redTiles.size() - 1)
+                .mapToObj(i -> IntStream.range(i + 1, redTiles().size())
+                        .mapToObj(j -> new Rectangle(redTiles.get(i), redTiles.get(j))))
+                .flatMap(s -> s)
+                .sorted(Comparator.comparingLong(Rectangle::area).reversed());
     }
 
     private boolean isInsidePolygon(Rectangle r, List<Rectangle> edges) {

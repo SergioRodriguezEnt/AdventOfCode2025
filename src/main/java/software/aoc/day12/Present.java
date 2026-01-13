@@ -24,4 +24,8 @@ public record Present(List<Coordinate> coordinates) {
     public Present rotateLeft() {
         return new Present(coordinates.stream().map(c -> new Coordinate(-c.y(), c.x())).toList());
     }
+
+    public Present move(Coordinate vector) {
+        return new Present(coordinates.stream().map(c->c.move(vector)).toList());
+    }
 }

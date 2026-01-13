@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public record Indicator(List<State> states, List<Integer> voltages) {
+    public static Indicator from(String states, String requiredVoltages) {
+        return new Indicator(State.from(states), voltagesFrom(requiredVoltages));
+    }
+
     public Indicator initialState() {
         return new Indicator(states.stream().map(_->State.OF).toList(), voltages.stream().map(_-> 0).toList());
     }
@@ -21,20 +25,15 @@ public record Indicator(List<State> states, List<Integer> voltages) {
         return new Indicator(states, voltages.stream().map(n->n/2).toList());
     }
 
-    public static Indicator from(String states, String requiredVoltages) {
-        return new Indicator(State.from(states), voltagesFrom(requiredVoltages));
-    }
-
-    private static List<Integer> voltagesFrom(String requiredVoltages) {
-        return Arrays.stream(requiredVoltages.substring(1, requiredVoltages.length() - 1).split(","))
-                .map(Integer::parseInt)
-                .toList();
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj.getClass() != Indicator.class) return false;
         return this.matchesStatesOf((Indicator) obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return voltages.hashCode();
     }
 
     private boolean matchesStatesOf(Indicator other) {
@@ -43,9 +42,10 @@ public record Indicator(List<State> states, List<Integer> voltages) {
                 .allMatch(i -> states.get(i) == other.states.get(i));
     }
 
-    @Override
-    public int hashCode() {
-        return voltages.hashCode();
+    private static List<Integer> voltagesFrom(String requiredVoltages) {
+        return Arrays.stream(requiredVoltages.substring(1, requiredVoltages.length() - 1).split(","))
+                .map(Integer::parseInt)
+                .toList();
     }
 
     public enum State {

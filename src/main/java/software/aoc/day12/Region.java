@@ -28,4 +28,20 @@ public record Region(int width, int length, Map<Integer, Integer> requiredPresen
     public int area() {
         return width * length;
     }
+
+    public List<Integer> requiredPresentList() {
+        return requiredPresents.entrySet()
+                .stream()
+                .flatMap(e->IntStream.range(0, e.getValue()).mapToObj(_ -> e.getKey()))
+                .toList();
+    }
+
+    public List<Coordinate> coordinates() {
+        return IntStream.range(1, width-1)
+                .mapToObj(x -> IntStream.range(1, length-1)
+                        .mapToObj(y -> new Coordinate(x, y))
+                )
+                .flatMap(s->s)
+                .toList();
+    }
 }

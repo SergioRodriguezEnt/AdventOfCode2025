@@ -14,14 +14,11 @@ public record Runner10(Stream<Machine> machines) {
         }
     }
 
-    public long run() {
+    public long runStateSolver() {
         return machines.mapToInt(Machine::solveDesiredState).sum();
     }
 
-    public long runB() {
-        return machines.mapToInt(machine -> {
-            System.out.println(machine);
-            return machine.solveVoltageRequirements();
-        }).sum();
+    public long runVoltageSolver() {
+        return machines.mapToInt(Machine::solveVoltageRequirements).sum();
     }
 }

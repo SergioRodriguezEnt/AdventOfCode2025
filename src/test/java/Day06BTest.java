@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Day06BTest {
     @Test
-    public void test_operation_builder() {
+    public void test_operation_builder_complex() {
         long[] results = new OperationBuilder().add("45 64 387 23").add(" 6 98 215 314").add("*  +  *   +").buildComplex().mapToLong(Operation::operate).toArray();
         assertThat(results).isEqualTo(new long[] {224, 117, 194400, 58});
     }

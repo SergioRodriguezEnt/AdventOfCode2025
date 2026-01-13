@@ -12,7 +12,7 @@ public record Cell(Space space, long paths) {
         return new Cell(Space.SPLITTER, 0);
     }
 
-    public static Cell beam() {
+    public static Cell newBeam() {
         return new Cell(Space.BEAM, 1);
     }
 
@@ -21,7 +21,7 @@ public record Cell(Space space, long paths) {
     }
 
     public static Cell from (char c) {
-        return c == '.' ? empty() : (c == '^' ? splitter() : beam());
+        return c == '.' ? empty() : (c == '^' ? splitter() : newBeam());
     }
 
     public static List<Cell> parse(String str) {
