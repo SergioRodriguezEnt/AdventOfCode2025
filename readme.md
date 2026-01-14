@@ -1,12 +1,14 @@
-# ADVENT OF CODE
+# ADVENT OF CODE 2025
 
-## PROJECT STRUCTURE
-The doc directory contains MarkDown files describing each day and phase.<br>
-The src directory contains all code and resource files:<br>
-* main/java/software/aoc: Each directory here corresponds to a day in AoC.
-* main/resources: Here are the input files given during AoC.
-* test/java: Contains the tests done for the code of each day.
-* test/resources: Contains files with test input made from the examples given in AoC.
+## OBJECTIVOS DEL PROYECTO
+El proposito de este proyecto es resolver el advent of code de este año en Java, tratando de seguir
+los principios SOLID y aquellos que ayuden a mantener un código limpio y legible.
+Como objetivo adicional, me he prohibido para este proyecto usar cualquier tipo de recursividad en los
+algoritmos.
 
-## TODO
-* complete readmes
+## ESTRUCTURA DEL PROYECTO
+- /doc Tiene los Readmes de cada día.
+- /src/main/java Contiene el código necesario para cada día y los Mains que ejecutan las entradas.
+- /src/main/resources Se debe crear esta carpeta e introducir los archivos .txt con las entradas necesarias para cada día.
+- /src/test/java Contiene los tests usados para el desarrollo por TDD de cada día y los tests para los ejemplos propuestos en el AOC.
+- /src/test/resources Se debe crear esta carpeta y crear en ella los archivos .txt con las entradas para los casos de prueba de cada día
